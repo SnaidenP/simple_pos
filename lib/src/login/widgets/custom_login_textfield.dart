@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:simple_pos/src/config/constants.dart';
 
-class LoginTextField extends StatefulWidget {
-  const LoginTextField({
+class CustomLoginTextField extends StatefulWidget {
+  const CustomLoginTextField({
     required this.labelText,
     required this.isPassword,
-    required this.onChanged,
+    required this.controller,
     super.key,
   });
   final String labelText;
   final bool isPassword;
-  final void Function(String) onChanged;
+  final TextEditingController controller;
 
   @override
-  State<LoginTextField> createState() => _LoginTextFieldState();
+  State<CustomLoginTextField> createState() => _CustomLoginTextFieldState();
 }
 
-class _LoginTextFieldState extends State<LoginTextField> {
+class _CustomLoginTextFieldState extends State<CustomLoginTextField> {
   bool showPassord = false;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 3.5,
       child: TextFormField(
-        onChanged: widget.onChanged,
+        controller: widget.controller,
         style: const TextStyle(color: primaryColor),
         // ignore: avoid_bool_literals_in_conditional_expressions
         obscureText: widget.isPassword ? !showPassord : false,

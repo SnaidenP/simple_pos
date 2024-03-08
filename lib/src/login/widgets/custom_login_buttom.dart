@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
+class CustomLoginButton extends StatelessWidget {
+  const CustomLoginButton({
     required this.labelText,
     required this.onPressed,
     super.key,
