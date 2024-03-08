@@ -139,6 +139,11 @@ class LoginScreen extends StatelessWidget {
                     labelText: 'Contraseña',
                     isPassword: true,
                     controller: password,
+                    onFieldSubmitted: (value) {
+                      context
+                          .read<LoginCubit>()
+                          .login(username.text, password.text);
+                    },
                   ),
                   SizedBox(
                     height: height / 40,

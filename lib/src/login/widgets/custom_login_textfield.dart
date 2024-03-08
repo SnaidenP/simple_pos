@@ -6,11 +6,13 @@ class CustomLoginTextField extends StatefulWidget {
     required this.labelText,
     required this.isPassword,
     required this.controller,
+    this.onFieldSubmitted,
     super.key,
   });
   final String labelText;
   final bool isPassword;
   final TextEditingController controller;
+  final void Function(String)? onFieldSubmitted;
 
   @override
   State<CustomLoginTextField> createState() => _CustomLoginTextFieldState();
@@ -25,6 +27,7 @@ class _CustomLoginTextFieldState extends State<CustomLoginTextField> {
       child: TextFormField(
         controller: widget.controller,
         style: const TextStyle(color: primaryColor),
+        onFieldSubmitted: widget.onFieldSubmitted,
         // ignore: avoid_bool_literals_in_conditional_expressions
         obscureText: widget.isPassword ? !showPassord : false,
         decoration: InputDecoration(
