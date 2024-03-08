@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:simple_pos/src/pos/widgets/products_widgets.dart';
 import 'package:simple_pos/src/pos/widgets/sidebar.dart';
 
