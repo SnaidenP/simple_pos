@@ -8,6 +8,7 @@ import 'package:simple_pos/src/login/data/repository.dart';
 import 'package:simple_pos/src/login/screen/registe_screen.dart';
 import 'package:simple_pos/src/login/widgets/custom_login_buttom.dart';
 import 'package:simple_pos/src/login/widgets/custom_login_textfield.dart';
+import 'package:simple_pos/src/pos/screen/pos_screen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -36,8 +37,38 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         state.maybeWhen(
           success: (user) {
-            // ignore: avoid_print
-            print('User: $user');
+            showDialog<String>(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return const AlertDialog(
+                  title: Icon(
+                    Icons.check,
+                    color: Colors.green,
+                    size: 50,
+                  ),
+                  content: Text(
+                    'Inicio de sesion exitoso',
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.green,
+                    ),
+                  ),
+                );
+              },
+            );
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<Widget>(
+                  builder: (context) {
+                    return const PosScreen();
+                  },
+                ),
+              );
+            });
           },
           error: (error) {
             if (error == 'Bad state: No element') {
