@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:simple_pos/src/config/database.dart';
 import 'package:simple_pos/src/login/models/user.dart';
 
@@ -16,7 +15,7 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<User> login(String email, String password) async {
     try {
       final user = await database.getUser(email, password);
-      debugPrint('User: $user');
+
       return User.fromJson(user.first.fields);
     } catch (e) {
       return Future.error(e);

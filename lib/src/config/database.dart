@@ -34,7 +34,7 @@ class Database {
   ) async {
     try {
       return await _connection.query(
-        'INSERT INTO users (username, password, name) VALUES (?, SHA2(?, 256), ?)',
+        '''INSERT INTO users (username, password, name) VALUES (?, SHA2(?, 256), ?)''',
         [username, password, name],
       );
     } catch (e) {
@@ -45,10 +45,8 @@ class Database {
   Future<Results> getProducts() async {
     try {
       final results = await _connection.query('SELECT * FROM products');
-      print(results);
       return results;
     } catch (e) {
-      print(e);
       return Future.error(e);
     }
   }

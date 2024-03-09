@@ -19,7 +19,7 @@ class ProductsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO (@SnaidenP): Add product to cart
+        // TODO: (@SnaidenP) Add product to cart
       },
       child: Tooltip(
         message: productName.length > 15 ? productName : '',
