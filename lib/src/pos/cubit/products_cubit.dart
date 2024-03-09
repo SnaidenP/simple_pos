@@ -10,11 +10,10 @@ class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit(this.repository) : super(const ProductsState.initial());
 
   final ProductsRepository repository;
-  // Load products from the database
-  Future<void> loadProducts() async {
+  Future<void> loadProducts([String? product]) async {
     emit(const ProductsState.loading());
     try {
-      final products = await repository.getProducts();
+      final products = await repository.getProducts(product);
       emit(
         ProductsState.loaded(
           products,

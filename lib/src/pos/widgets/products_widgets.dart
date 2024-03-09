@@ -7,6 +7,8 @@ class ProductsWidget extends StatelessWidget {
     required this.productType,
     required this.productPrice,
     required this.productStock,
+    this.onLongPress,
+    this.onTap,
     super.key,
   });
 
@@ -14,13 +16,14 @@ class ProductsWidget extends StatelessWidget {
   final String productType;
   final double productPrice;
   final int productStock;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // TODO: (@SnaidenP) Add product to cart
-      },
+      onTap: onTap,
+      onLongPress: onLongPress,
       child: Tooltip(
         message: productName.length > 15 ? productName : '',
         child: Container(

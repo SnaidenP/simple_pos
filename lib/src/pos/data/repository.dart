@@ -6,8 +6,8 @@ class ProductsRepository {
 
   final Database database;
 
-  Future<List<Product>> getProducts() async {
-    final products = await database.getProducts();
+  Future<List<Product>> getProducts([String? search]) async {
+    final products = await database.getProducts(search);
     return products.map((e) => Product.fromJson(e.fields)).toList();
   }
 }

@@ -42,10 +42,16 @@ class Database {
     }
   }
 
-  Future<Results> getProducts() async {
+  Future<Results> getProducts([String? product]) async {
     try {
-      final results = await _connection.query('SELECT * FROM products');
-      return results;
+      if (product != null) {
+        final result = await _connection.query(
+          'SELECT * FROM products WHERE name LIKE ?',
+          ['%$product%'],
+        );
+        return result;
+      }
+      return await _connection.query('SELECT * FROM products');
     } catch (e) {
       return Future.error(e);
     }

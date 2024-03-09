@@ -1,20 +1,32 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simple_pos/src/config/constants.dart';
 import 'package:simple_pos/src/config/database.dart';
+import 'package:simple_pos/src/pos/cubit/cubit/cart_cubit.dart';
 import 'package:simple_pos/src/pos/cubit/products_cubit.dart';
 import 'package:simple_pos/src/pos/data/repository.dart';
+import 'package:simple_pos/src/pos/widgets/product_in_cart.dart';
 import 'package:simple_pos/src/pos/widgets/products_widgets.dart';
 import 'package:simple_pos/src/pos/widgets/sidebar.dart';
+import 'package:simple_pos/src/pos/widgets/textfield_search_producs.dart';
 
 class PosPage extends StatelessWidget {
   const PosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          ProductsCubit(ProductsRepository(context.read<Database>()))
-            ..loadProducts(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              ProductsCubit(ProductsRepository(context.read<Database>()))
+                ..loadProducts(),
+        ),
+        BlocProvider(
+          create: (context) => CartCubit(),
+        ),
+      ],
       child: const PosScreen(),
     );
   }
@@ -70,6 +82,11 @@ class _PosScreenState extends State<PosScreen> {
                                   productType: products[index].productType,
                                   productPrice: products[index].price,
                                   productStock: products[index].stock,
+                                  onTap: () => context
+                                      .read<CartCubit>()
+                                      .addProductToCart(
+                                        products[index],
+                                      ),
                                 );
                               },
                             ),
@@ -84,12 +101,131 @@ class _PosScreenState extends State<PosScreen> {
             ),
             Column(
               children: [
-                const Text('POS Screen'),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                SearchProductField(
+                  onChanged: (value) {
+                    context.read<ProductsCubit>().loadProducts(value);
                   },
-                  child: const Text('Back'),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 4.5,
+                  height: MediaQuery.sizeOf(context).height - 150,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Producto',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                'Cantidad',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 40),
+                              Text(
+                                'Precio',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: BlocBuilder<CartCubit, CartState>(
+                            builder: (context, state) {
+                              return state.when(
+                                initial: (_) => const Center(
+                                  child: Text('No hay productos en el carrito'),
+                                ),
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                loaded: (products) => Expanded(
+                                  child: ListView.builder(
+                                    itemCount: products.length,
+                                    itemBuilder: (context, index) {
+                                      return ProductsInCart(
+                                        productName: products[index].name,
+                                        quantity: products[index].quantity,
+                                        price: products[index].price,
+                                        onTap: () => context
+                                            .read<CartCubit>()
+                                            .removeProductFromCart(
+                                              products[index].id,
+                                            ),
+                                        onLongPress: () => context
+                                            .read<CartCubit>()
+                                            .removeProductFromCartAll(
+                                              products[index].id,
+                                            ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                error: Text.new,
+                              );
+                            },
+                          ),
+                        ),
+                        Text(
+                          'Total: \$${context.select((CartCubit cubit) => cubit.totalPrice).toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () =>
+                                  context.read<CartCubit>().clearCart(),
+                            ),
+                            SizedBox(
+                              width: 150,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: secondaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {},
+                                child: const Text(
+                                  'Pagar',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
