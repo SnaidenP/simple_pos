@@ -41,4 +41,15 @@ class Database {
       return Future.error(e);
     }
   }
+
+  Future<Results> getProducts() async {
+    try {
+      final results = await _connection.query('SELECT * FROM products');
+      print(results);
+      return results;
+    } catch (e) {
+      print(e);
+      return Future.error(e);
+    }
+  }
 }

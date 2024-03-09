@@ -22,7 +22,7 @@ class ProductsWidget extends StatelessWidget {
         // TODO (@SnaidenP): Add product to cart
       },
       child: Tooltip(
-        message: productName.length > 13 ? productName : '',
+        message: productName.length > 15 ? productName : '',
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -32,9 +32,20 @@ class ProductsWidget extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'assets/logo.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     Text(
                       productName,
                       overflow: TextOverflow.ellipsis,

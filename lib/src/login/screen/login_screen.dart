@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          LoginCubit(LoginRepositoryImpl(database: Database())),
+          LoginCubit(LoginRepositoryImpl(database: context.read<Database>())),
       child: const LoginScreen(),
     );
   }
@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute<Widget>(
                   builder: (context) {
-                    return const PosScreen();
+                    return const PosPage();
                   },
                 ),
               );
