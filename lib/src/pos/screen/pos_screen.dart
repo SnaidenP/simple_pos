@@ -1,11 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_pos/src/config/constants.dart';
 import 'package:simple_pos/src/config/database.dart';
 import 'package:simple_pos/src/pos/cubit/cubit/cart_cubit.dart';
 import 'package:simple_pos/src/pos/cubit/products_cubit.dart';
 import 'package:simple_pos/src/pos/data/repository.dart';
+import 'package:simple_pos/src/pos/screen/checkout_screen.dart';
 import 'package:simple_pos/src/pos/widgets/product_in_cart.dart';
 import 'package:simple_pos/src/pos/widgets/products_widgets.dart';
 import 'package:simple_pos/src/pos/widgets/sidebar.dart';
@@ -186,7 +187,9 @@ class _PosScreenState extends State<PosScreen> {
                           ),
                         ),
                         Text(
-                          'Total: \$${context.select((CartCubit cubit) => cubit.totalPrice).toStringAsFixed(2)}',
+                          'Total: \$${context.select(
+                                (CartCubit cubit) => cubit.totalPrice,
+                              ).toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -211,7 +214,36 @@ class _PosScreenState extends State<PosScreen> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  final products = Provider.of<CartCubit>(
+                                    context,
+                                    listen: false,
+                                  ).state.maybeWhen(
+                                        initial: (products) => products,
+                                        loaded: (products) => products,
+                                        orElse: () => <ProductsInCart>[],
+                                      );
+                                  if (products.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        showCloseIcon: true,
+                                        duration: Duration(seconds: 1),
+                                        content: Text(
+                                          'El carrito no puede estar vacio',
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute<Widget>(
+                                        builder: (context) =>
+                                            const CheckoutScreen(),
+                                      ),
+                                      (Route<dynamic> route) => true,
+                                    );
+                                  }
+                                },
                                 child: const Text(
                                   'Pagar',
                                   style: TextStyle(
