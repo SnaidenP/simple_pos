@@ -228,8 +228,10 @@ class _PosScreenState extends State<PosScreen> {
                                       const SnackBar(
                                         showCloseIcon: true,
                                         duration: Duration(seconds: 1),
-                                        content: Text(
-                                          'El carrito no puede estar vacio',
+                                        content: Center(
+                                          child: Text(
+                                            'El carrito no puede estar vacio',
+                                          ),
                                         ),
                                       ),
                                     );
