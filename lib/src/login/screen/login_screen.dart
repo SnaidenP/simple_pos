@@ -7,7 +7,7 @@ import 'package:simple_pos/src/login/data/repository.dart';
 import 'package:simple_pos/src/login/screen/registe_screen.dart';
 import 'package:simple_pos/src/login/widgets/custom_login_buttom.dart';
 import 'package:simple_pos/src/login/widgets/custom_login_textfield.dart';
-import 'package:simple_pos/src/pos/screen/pos_screen.dart';
+import 'package:simple_pos/src/pos/views/pos_screen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

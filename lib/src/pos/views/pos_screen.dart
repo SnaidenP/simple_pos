@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_pos/src/checkout/cubit/client_cubit.dart';
+import 'package:simple_pos/src/checkout/cubit/cubit/select_client_cubit.dart';
+import 'package:simple_pos/src/checkout/data/repository.dart';
 import 'package:simple_pos/src/config/constants.dart';
 import 'package:simple_pos/src/config/database.dart';
 import 'package:simple_pos/src/pos/cubit/cubit/cart_cubit.dart';
 import 'package:simple_pos/src/pos/cubit/products_cubit.dart';
 import 'package:simple_pos/src/pos/data/repository.dart';
-import 'package:simple_pos/src/pos/screen/checkout_screen.dart';
+import 'package:simple_pos/src/checkout/views/checkout_screen.dart';
 import 'package:simple_pos/src/pos/widgets/product_in_cart.dart';
 import 'package:simple_pos/src/pos/widgets/products_widgets.dart';
 import 'package:simple_pos/src/pos/widgets/sidebar.dart';
@@ -236,11 +239,26 @@ class _PosScreenState extends State<PosScreen> {
                                       ),
                                     );
                                   } else {
+                                    final cubit = context.read<CartCubit>();
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute<Widget>(
-                                        builder: (context) =>
-                                            const CheckoutScreen(),
+                                        builder: (context) => MultiBlocProvider(
+                                          providers: [
+                                            BlocProvider(
+                                              create: (context) => ClientCubit(
+                                                CheckoutRepositoryImpl(
+                                                  database:
+                                                      context.read<Database>(),
+                                                ),
+                                              ),
+                                            ),
+                                            BlocProvider.value(
+                                              value: cubit,
+                                            ),
+                                          ],
+                                          child: const CheckOutScreen(),
+                                        ),
                                       ),
                                       (Route<dynamic> route) => true,
                                     );

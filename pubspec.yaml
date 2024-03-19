@@ -43,6 +43,11 @@ dependencies:
   freezed_annotation: ^2.4.1
   encrypt: ^5.0.3
   image: ^4.1.7
+  pdf: ^3.10.8
+  path_provider: ^2.1.2
+  open_file: ^3.3.2
+  open_filex: ^4.4.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +80,10 @@ flutter:
   assets:
     - assets/logo.png
     - assets/pan.png
+  fonts:
+    - family: Open_Sans
+      fonts:
+        - asset: assets/Open_Sans/static/OpenSans_Condensed-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

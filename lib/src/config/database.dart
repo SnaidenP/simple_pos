@@ -1,4 +1,5 @@
 import 'package:mysql1/mysql1.dart';
+import 'package:simple_pos/src/checkout/models/invoce.dart';
 
 class Database {
   Database() {
@@ -52,6 +53,32 @@ class Database {
         return result;
       }
       return await _connection.query('SELECT * FROM products');
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<Results> getClients([String? client]) async {
+    try {
+      if (client != null) {
+        final result = await _connection.query(
+          'SELECT * FROM clients WHERE name LIKE ?',
+          ['%$client%'],
+        );
+        return result;
+      }
+      return await _connection.query('SELECT * FROM clients');
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<Results> createInvoice(Invoice invoce) async {
+    try {
+      return await _connection.query(
+        'INSERT INTO invoce (client, date, products, total) VALUES (?, ?, ?, ?)',
+        [invoce.client, invoce.date, invoce.products, invoce.total],
+      );
     } catch (e) {
       return Future.error(e);
     }
