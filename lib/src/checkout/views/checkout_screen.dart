@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:simple_pos/src/checkout/cubit/client_cubit.dart';
 import 'package:simple_pos/src/checkout/cubit/cubit/invoce_cubit.dart';
 import 'package:simple_pos/src/checkout/cubit/cubit/select_client_cubit.dart';
 import 'package:simple_pos/src/checkout/data/repository.dart';
@@ -33,9 +31,15 @@ class CheckOutScreen extends StatelessWidget {
   }
 }
 
-class CheckoutPage extends StatelessWidget {
+class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
 
+  @override
+  State<CheckoutPage> createState() => _CheckoutPageState();
+}
+
+class _CheckoutPageState extends State<CheckoutPage> {
+  final textFieldTotalController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,13 +111,72 @@ class CheckoutPage extends StatelessWidget {
                       value: 'cash',
                     ),
                     DropdownMenuEntry(
+                      label: 'Transferencia',
+                      value: 'transfer',
+                    ),
+                    DropdownMenuEntry(
+                      label: 'Cheque',
+                      value: 'check',
+                    ),
+                    DropdownMenuEntry(
                       label: 'Tarjeta de crédito',
                       value: 'credit_card',
                     ),
                   ],
                 ),
-                const Spacer(),
+                // Textfield que dice cuando el cliente pago
+                const SizedBox(height: 16),
+                const Text(
+                  'Monto pagado',
+                  style: TextStyle(fontSize: 24),
+                ),
+                const SizedBox(height: 16),
 
+                SizedBox(
+                  width: 180,
+                  height: 50,
+                  child: TextField(
+                    controller: textFieldTotalController,
+                    onChanged: (value) => setState(() {}),
+                    decoration: const InputDecoration(
+                      labelText: 'Monto pagado',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+
+                const Spacer(),
+                const Text(
+                  'Total a devolver',
+                  style: TextStyle(fontSize: 24),
+                ),
+
+                BlocBuilder<CartCubit, CartState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      loaded: (products) {
+                        final total = products.fold<double>(
+                          0,
+                          (previousValue, element) =>
+                              previousValue + element.price,
+                        );
+                        final totalPaid = double.tryParse(
+                          textFieldTotalController.text,
+                        );
+                        if (totalPaid != null) {
+                          return Text(
+                            (totalPaid - total).toStringAsFixed(2),
+                            style: const TextStyle(fontSize: 24),
+                          );
+                        }
+                        return const Text('0.00');
+                      },
+                      orElse: () =>
+                          const Text('Error no hay productos en el carrito'),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
                 // Total
                 SizedBox(
                   width: 300,
@@ -152,9 +215,35 @@ class CheckoutPage extends StatelessWidget {
                               ),
                             );
 
-                        context.read<CartCubit>().clearCart();
-                        // context.read<InvoceCubit>().createPdf(invoce);
-                        Navigator.pop(context);
+                        showDialog<AlertDialog>(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: const Text('¿Desea un PDF de la factura?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<InvoceCubit>()
+                                        .createPdf(invoce);
+                                    context.read<CartCubit>().clearCart();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Si'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    context.read<CartCubit>().clearCart();
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('No'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -206,6 +295,87 @@ class CheckoutPage extends StatelessWidget {
                           ),
                         ),
                         orElse: () => const Text('No hay productos'),
+                      );
+                    },
+                  ),
+                  // Total a devolver
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 16),
+                      const Text(
+                        'Sub-total',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(width: 16),
+                      BlocBuilder<CartCubit, CartState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            loaded: (products) {
+                              final total = products.fold<double>(
+                                0,
+                                (previousValue, element) =>
+                                    previousValue + element.price,
+                              );
+                              return Text(
+                                (total * 0.82).toStringAsFixed(2),
+                                style: const TextStyle(fontSize: 24),
+                              );
+                            },
+                            orElse: () => const Text(
+                              'Error no hay productos en el carrito',
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 16),
+                      const Text(
+                        'ITEBIS',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(width: 16),
+                      BlocBuilder<CartCubit, CartState>(
+                        builder: (context, state) {
+                          return state.maybeWhen(
+                            loaded: (products) {
+                              final total = products.fold<double>(
+                                0,
+                                (previousValue, element) =>
+                                    previousValue + element.price,
+                              );
+                              return Text(
+                                (total * 0.18).toStringAsFixed(2),
+                                style: const TextStyle(fontSize: 24),
+                              );
+                            },
+                            orElse: () => const Text(
+                              'Error no hay productos en el carrito',
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Total',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  const SizedBox(height: 16),
+                  BlocBuilder<CartCubit, CartState>(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        loaded: (products) {
+                          final total = products.fold<double>(
+                            0,
+                            (previousValue, element) =>
+                                previousValue + element.price,
+                          );
+                          return Text(total.toStringAsFixed(2));
+                        },
+                        orElse: () =>
+                            const Text('Error no hay productos en el carrito'),
                       );
                     },
                   ),

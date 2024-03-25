@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:simple_pos/src/pos/models/products_in_cart.dart';
 
 part 'invoce.freezed.dart';
 part 'invoce.g.dart';

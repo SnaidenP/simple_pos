@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pdf/widgets.dart';
 import 'package:simple_pos/src/checkout/data/repository.dart';
 import 'package:simple_pos/src/checkout/models/invoce.dart';
 import 'package:simple_pos/src/config/pdf_invoce.dart';

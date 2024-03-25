@@ -62,8 +62,8 @@ class Database {
     try {
       if (client != null) {
         final result = await _connection.query(
-          'SELECT * FROM clients WHERE name LIKE ?',
-          ['%$client%'],
+          'SELECT * FROM clients WHERE name LIKE ? OR rnc LIKE ?',
+          ['%$client%', '%$client%'],
         );
         return result;
       }
@@ -78,6 +78,17 @@ class Database {
       return await _connection.query(
         'INSERT INTO invoce (client, date, products, total) VALUES (?, ?, ?, ?)',
         [invoce.client, invoce.date, invoce.products, invoce.total],
+      );
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<Results> createClient(String name, String rnc, String phone) async {
+    try {
+      return await _connection.query(
+        'INSERT INTO clients (name, rnc, phone) VALUES (?, ?, ?)',
+        [name, rnc, phone],
       );
     } catch (e) {
       return Future.error(e);
