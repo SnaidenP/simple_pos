@@ -7,8 +7,10 @@ part 'invoce.g.dart';
 class Invoice with _$Invoice {
   const factory Invoice({
     required String client,
+    required String vendedor,
     required String date,
     required String products,
+    required String metodoPago,
     required double total,
     int? id,
   }) = _Invoice;

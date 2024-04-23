@@ -26,4 +26,15 @@ class ClientCubit extends Cubit<ClientState> {
   void selectClient(Client client) {
     emit(ClientState.success([client]));
   }
+
+  // create client
+  Future<void> createClient(Client client) async {
+    emit(const ClientState.loading());
+    try {
+      await repository.createClient(client);
+      emit(ClientState.success([client]));
+    } catch (e) {
+      emit(ClientState.error(e.toString()));
+    }
+  }
 }

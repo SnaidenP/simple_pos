@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_pos/src/checkout/cubit/client_cubit.dart';
 import 'package:simple_pos/src/checkout/cubit/cubit/select_client_cubit.dart';
 import 'package:simple_pos/src/checkout/data/repository.dart';
+import 'package:simple_pos/src/checkout/models/client.dart';
 import 'package:simple_pos/src/checkout/widgets/client_card.dart';
+import 'package:simple_pos/src/config/constants.dart';
 import 'package:simple_pos/src/config/database.dart';
 
 class SelectClientsModal extends StatelessWidget {
@@ -26,11 +28,17 @@ class SelectClientsModal extends StatelessWidget {
   }
 }
 
-class SelectClients extends StatelessWidget {
+class SelectClients extends StatefulWidget {
   const SelectClients({super.key});
 
   @override
+  State<SelectClients> createState() => _SelectClientsState();
+}
+
+class _SelectClientsState extends State<SelectClients> {
+  @override
   Widget build(BuildContext context) {
+    final searchController = TextEditingController();
     Timer? debounce;
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -41,6 +49,7 @@ class SelectClients extends StatelessWidget {
           SizedBox(
             width: 500,
             child: TextFormField(
+              controller: searchController,
               decoration: const InputDecoration(
                 labelText: 'Buscar cliente',
                 prefixIcon: Icon(Icons.search),
@@ -67,8 +76,147 @@ class SelectClients extends StatelessWidget {
                       const Center(child: CircularProgressIndicator()),
                   success: (state) {
                     if (state.clients.isEmpty) {
-                      return const Center(
-                        child: Text('No se encontraron clientes'),
+                      return Center(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('No se encontraron clientes'),
+                                TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<ClientCubit>()
+                                        .getClients(searchController.text);
+                                  },
+                                  child: const Text('Recargar'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              child: const Text('Crear Cliente'),
+                              onPressed: () {
+                                final nameController = TextEditingController();
+                                final rncController = TextEditingController();
+                                final phoneController = TextEditingController();
+
+                                if (searchController.text.isNotEmpty &&
+                                    int.tryParse(searchController.text) !=
+                                        null) {
+                                  rncController.text = searchController.text;
+                                } else {
+                                  nameController.text = searchController.text;
+                                }
+                                showModalBottomSheet<String>(
+                                  context: context,
+                                  builder: (context) {
+                                    return Container(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
+                                        children: [
+                                          const Text(
+                                            'Crear Cliente',
+                                            style: TextStyle(fontSize: 24),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          SizedBox(
+                                            width: 500,
+                                            child: TextFormField(
+                                              controller: nameController,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Nombre del cliente',
+                                                prefixIcon: Icon(Icons.person),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          SizedBox(
+                                            width: 500,
+                                            child: TextFormField(
+                                              controller: rncController,
+                                              decoration: const InputDecoration(
+                                                labelText: 'RNC',
+                                                prefixIcon: Icon(Icons.numbers),
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          SizedBox(
+                                            width: 500,
+                                            child: TextFormField(
+                                              controller: phoneController,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Teléfono',
+                                                prefixIcon: Icon(Icons.phone),
+                                              ),
+                                              keyboardType: TextInputType.phone,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              // Validate form
+                                              if (nameController.text.isEmpty ||
+                                                  rncController.text.isEmpty ||
+                                                  phoneController
+                                                      .text.isEmpty) {
+                                                // Show error message
+                                                showDialog<void>(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title:
+                                                          const Text('Error'),
+                                                      content: const Text(
+                                                        'Todos los campos '
+                                                        'son requeridos',
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                              context,
+                                                            ).pop();
+                                                          },
+                                                          child: const Text(
+                                                            'Cerrar',
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                                return;
+                                              }
+                                              context
+                                                  .read<Database>()
+                                                  .createClient(
+                                                    Client(
+                                                      name: nameController.text,
+                                                      phone:
+                                                          phoneController.text,
+                                                      rnc: int.parse(
+                                                        rncController.text,
+                                                      ),
+                                                    ),
+                                                  );
+
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Crear Cliente'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       );
                     }
                     return ListView.builder(
@@ -78,7 +226,6 @@ class SelectClients extends StatelessWidget {
                         return ClientCard(
                           client: client,
                           onTap: () {
-                            // Seleccinar cliente
                             context
                                 .read<SelectClientCubit>()
                                 .loadClient(client);

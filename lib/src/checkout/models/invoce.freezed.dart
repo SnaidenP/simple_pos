@@ -21,8 +21,10 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Invoice {
   String get client => throw _privateConstructorUsedError;
+  String get vendedor => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   String get products => throw _privateConstructorUsedError;
+  String get metodoPago => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
 
@@ -37,7 +39,13 @@ abstract class $InvoiceCopyWith<$Res> {
       _$InvoiceCopyWithImpl<$Res, Invoice>;
   @useResult
   $Res call(
-      {String client, String date, String products, double total, int? id});
+      {String client,
+      String vendedor,
+      String date,
+      String products,
+      String metodoPago,
+      double total,
+      int? id});
 }
 
 /// @nodoc
@@ -54,8 +62,10 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
   @override
   $Res call({
     Object? client = null,
+    Object? vendedor = null,
     Object? date = null,
     Object? products = null,
+    Object? metodoPago = null,
     Object? total = null,
     Object? id = freezed,
   }) {
@@ -64,6 +74,10 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
           ? _value.client
           : client // ignore: cast_nullable_to_non_nullable
               as String,
+      vendedor: null == vendedor
+          ? _value.vendedor
+          : vendedor // ignore: cast_nullable_to_non_nullable
+              as String,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -71,6 +85,10 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
       products: null == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
+              as String,
+      metodoPago: null == metodoPago
+          ? _value.metodoPago
+          : metodoPago // ignore: cast_nullable_to_non_nullable
               as String,
       total: null == total
           ? _value.total
@@ -92,7 +110,13 @@ abstract class _$$InvoiceImplCopyWith<$Res> implements $InvoiceCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String client, String date, String products, double total, int? id});
+      {String client,
+      String vendedor,
+      String date,
+      String products,
+      String metodoPago,
+      double total,
+      int? id});
 }
 
 /// @nodoc
@@ -107,8 +131,10 @@ class __$$InvoiceImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? client = null,
+    Object? vendedor = null,
     Object? date = null,
     Object? products = null,
+    Object? metodoPago = null,
     Object? total = null,
     Object? id = freezed,
   }) {
@@ -117,6 +143,10 @@ class __$$InvoiceImplCopyWithImpl<$Res>
           ? _value.client
           : client // ignore: cast_nullable_to_non_nullable
               as String,
+      vendedor: null == vendedor
+          ? _value.vendedor
+          : vendedor // ignore: cast_nullable_to_non_nullable
+              as String,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -124,6 +154,10 @@ class __$$InvoiceImplCopyWithImpl<$Res>
       products: null == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
+              as String,
+      metodoPago: null == metodoPago
+          ? _value.metodoPago
+          : metodoPago // ignore: cast_nullable_to_non_nullable
               as String,
       total: null == total
           ? _value.total
@@ -142,8 +176,10 @@ class __$$InvoiceImplCopyWithImpl<$Res>
 class _$InvoiceImpl implements _Invoice {
   const _$InvoiceImpl(
       {required this.client,
+      required this.vendedor,
       required this.date,
       required this.products,
+      required this.metodoPago,
       required this.total,
       this.id});
 
@@ -153,9 +189,13 @@ class _$InvoiceImpl implements _Invoice {
   @override
   final String client;
   @override
+  final String vendedor;
+  @override
   final String date;
   @override
   final String products;
+  @override
+  final String metodoPago;
   @override
   final double total;
   @override
@@ -163,7 +203,7 @@ class _$InvoiceImpl implements _Invoice {
 
   @override
   String toString() {
-    return 'Invoice(client: $client, date: $date, products: $products, total: $total, id: $id)';
+    return 'Invoice(client: $client, vendedor: $vendedor, date: $date, products: $products, metodoPago: $metodoPago, total: $total, id: $id)';
   }
 
   @override
@@ -172,17 +212,21 @@ class _$InvoiceImpl implements _Invoice {
         (other.runtimeType == runtimeType &&
             other is _$InvoiceImpl &&
             (identical(other.client, client) || other.client == client) &&
+            (identical(other.vendedor, vendedor) ||
+                other.vendedor == vendedor) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.products, products) ||
                 other.products == products) &&
+            (identical(other.metodoPago, metodoPago) ||
+                other.metodoPago == metodoPago) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, client, date, products, total, id);
+  int get hashCode => Object.hash(
+      runtimeType, client, vendedor, date, products, metodoPago, total, id);
 
   @JsonKey(ignore: true)
   @override
@@ -201,8 +245,10 @@ class _$InvoiceImpl implements _Invoice {
 abstract class _Invoice implements Invoice {
   const factory _Invoice(
       {required final String client,
+      required final String vendedor,
       required final String date,
       required final String products,
+      required final String metodoPago,
       required final double total,
       final int? id}) = _$InvoiceImpl;
 
@@ -211,9 +257,13 @@ abstract class _Invoice implements Invoice {
   @override
   String get client;
   @override
+  String get vendedor;
+  @override
   String get date;
   @override
   String get products;
+  @override
+  String get metodoPago;
   @override
   double get total;
   @override

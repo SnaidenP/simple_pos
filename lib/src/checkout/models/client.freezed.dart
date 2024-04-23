@@ -20,10 +20,10 @@ Client _$ClientFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Client {
-  int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get rnc => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $ClientCopyWith<$Res> {
   factory $ClientCopyWith(Client value, $Res Function(Client) then) =
       _$ClientCopyWithImpl<$Res, Client>;
   @useResult
-  $Res call({int id, String name, int rnc, String phone});
+  $Res call({String name, int rnc, String phone, int? id});
 }
 
 /// @nodoc
@@ -51,16 +51,12 @@ class _$ClientCopyWithImpl<$Res, $Val extends Client>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
     Object? rnc = null,
     Object? phone = null,
+    Object? id = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -73,6 +69,10 @@ class _$ClientCopyWithImpl<$Res, $Val extends Client>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -84,7 +84,7 @@ abstract class _$$ClientImplCopyWith<$Res> implements $ClientCopyWith<$Res> {
       __$$ClientImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, int rnc, String phone});
+  $Res call({String name, int rnc, String phone, int? id});
 }
 
 /// @nodoc
@@ -98,16 +98,12 @@ class __$$ClientImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
     Object? rnc = null,
     Object? phone = null,
+    Object? id = freezed,
   }) {
     return _then(_$ClientImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -120,6 +116,10 @@ class __$$ClientImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -128,26 +128,23 @@ class __$$ClientImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClientImpl implements _Client {
   const _$ClientImpl(
-      {required this.id,
-      required this.name,
-      required this.rnc,
-      required this.phone});
+      {required this.name, required this.rnc, required this.phone, this.id});
 
   factory _$ClientImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClientImplFromJson(json);
 
-  @override
-  final int id;
   @override
   final String name;
   @override
   final int rnc;
   @override
   final String phone;
+  @override
+  final int? id;
 
   @override
   String toString() {
-    return 'Client(id: $id, name: $name, rnc: $rnc, phone: $phone)';
+    return 'Client(name: $name, rnc: $rnc, phone: $phone, id: $id)';
   }
 
   @override
@@ -155,15 +152,15 @@ class _$ClientImpl implements _Client {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClientImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.rnc, rnc) || other.rnc == rnc) &&
-            (identical(other.phone, phone) || other.phone == phone));
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, rnc, phone);
+  int get hashCode => Object.hash(runtimeType, name, rnc, phone, id);
 
   @JsonKey(ignore: true)
   @override
@@ -181,21 +178,21 @@ class _$ClientImpl implements _Client {
 
 abstract class _Client implements Client {
   const factory _Client(
-      {required final int id,
-      required final String name,
+      {required final String name,
       required final int rnc,
-      required final String phone}) = _$ClientImpl;
+      required final String phone,
+      final int? id}) = _$ClientImpl;
 
   factory _Client.fromJson(Map<String, dynamic> json) = _$ClientImpl.fromJson;
 
-  @override
-  int get id;
   @override
   String get name;
   @override
   int get rnc;
   @override
   String get phone;
+  @override
+  int? get id;
   @override
   @JsonKey(ignore: true)
   _$$ClientImplCopyWith<_$ClientImpl> get copyWith =>

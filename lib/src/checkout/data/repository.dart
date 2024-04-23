@@ -6,6 +6,7 @@ import 'package:simple_pos/src/config/database.dart';
 abstract class CheckoutRepository {
   Future<List<Client>> getClients([String? client]);
   Future<Results> createInvoice(Invoice invoice);
+  Future<Results> createClient(Client client);
 }
 
 class CheckoutRepositoryImpl implements CheckoutRepository {
@@ -30,6 +31,16 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
     try {
       print('invoice 2: $invoice');
       final results = await database.createInvoice(invoice);
+      return results;
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  @override
+  Future<Results> createClient(Client client) async {
+    try {
+      final results = await database.createClient(client);
       return results;
     } catch (e) {
       return Future.error(e);

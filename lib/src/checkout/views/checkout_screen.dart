@@ -40,6 +40,7 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   final textFieldTotalController = TextEditingController();
+  final textFieldPaymentMethodController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,9 +104,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   style: TextStyle(fontSize: 24),
                 ),
                 const SizedBox(height: 16),
-                const DropdownMenu(
-                  label: Text('Método de pago'),
-                  dropdownMenuEntries: <DropdownMenuEntry>[
+                DropdownMenu(
+                  controller: textFieldPaymentMethodController,
+                  label: const Text('Método de pago'),
+                  dropdownMenuEntries: const <DropdownMenuEntry>[
                     DropdownMenuEntry(
                       label: 'Efectivo',
                       value: 'cash',
@@ -164,9 +166,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           textFieldTotalController.text,
                         );
                         if (totalPaid != null) {
+                          final totalToReturn = totalPaid - total;
                           return Text(
-                            (totalPaid - total).toStringAsFixed(2),
-                            style: const TextStyle(fontSize: 24),
+                            totalToReturn < 0
+                                ? 'Faltan: ${totalToReturn.abs()..toStringAsFixed(2)}'
+                                : totalToReturn.toStringAsFixed(2),
+                            style: TextStyle(
+                              fontSize: 24,
+                              color:
+                                  totalToReturn < 0 ? Colors.red : Colors.black,
+                            ),
                           );
                         }
                         return const Text('0.00');
@@ -209,8 +218,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         context.read<InvoceCubit>().createInvoice(
                               Invoice(
                                 client: selectedClient.name,
+                                vendedor: 'Vendedor 1',
                                 date: DateTime.now().toString(),
                                 products: products.toString(),
+                                metodoPago:
+                                    textFieldPaymentMethodController.text,
                                 total: total,
                               ),
                             );
