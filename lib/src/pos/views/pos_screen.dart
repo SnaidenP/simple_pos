@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_pos/src/checkout/cubit/client_cubit.dart';
+import 'package:simple_pos/src/checkout/cubit/cubit/invoce_cubit.dart';
 import 'package:simple_pos/src/checkout/data/repository.dart';
 import 'package:simple_pos/src/checkout/views/checkout_screen.dart';
 import 'package:simple_pos/src/config/constants.dart';
 import 'package:simple_pos/src/config/database.dart';
 import 'package:simple_pos/src/pos/cubit/cubit/cart_cubit.dart';
+import 'package:simple_pos/src/pos/cubit/cubit/cuadre_cubit.dart';
 import 'package:simple_pos/src/pos/cubit/products_cubit.dart';
 import 'package:simple_pos/src/pos/data/repository.dart';
 import 'package:simple_pos/src/pos/widgets/product_in_cart.dart';
@@ -29,6 +32,13 @@ class PosPage extends StatelessWidget {
         BlocProvider(
           create: (context) => CartCubit(),
         ),
+        BlocProvider(
+          create: (context) => CuadreCubit(
+            ProductsRepository(
+              context.read<Database>(),
+            ),
+          ),
+        ),
       ],
       child: const PosScreen(),
     );
@@ -45,6 +55,7 @@ class PosScreen extends StatefulWidget {
 class _PosScreenState extends State<PosScreen> {
   @override
   Widget build(BuildContext context) {
+    final cuadreCubit = context.read<CuadreCubit>();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -275,6 +286,48 @@ class _PosScreenState extends State<PosScreen> {
                         ),
                         const SizedBox(height: 20),
                       ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Provider.value(
+                  value: cuadreCubit,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 4.5,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                      ),
+                      onPressed: () {
+                        showDialog<String>(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Cuadre de caja'),
+                              content: const Text(
+                                '¿Desea hacer el cuadre de caja?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text('Aceptar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Text('Cuadre de caja'),
                     ),
                   ),
                 ),

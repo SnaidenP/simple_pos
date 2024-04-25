@@ -78,8 +78,9 @@ class Database {
   Future<Results> createInvoice(Invoice invoce) async {
     try {
       return await _connection.query(
-        'INSERT INTO invoce (vendedor, client, date, products, metodo_pago, total) VALUES (?, ?, ?, ?, ?, ?)',
+        'INSERT INTO invoce (ncf, vendedor, client, date, products, metodo_pago, total) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [
+          invoce.ncf,
           invoce.vendedor,
           invoce.client,
           invoce.date,
@@ -104,9 +105,36 @@ class Database {
     }
   }
 
-  Future<Results> getNfcTypes() async {
+  Future<Results> getNfcTypes([String? ncf]) async {
     try {
+      if (ncf != null) {
+        final result = await _connection.query(
+          'SELECT * FROM ncf_types WHERE ncf LIKE ?',
+          ['%$ncf%'],
+        );
+        return result;
+      }
       return await _connection.query('SELECT * FROM ncf_types');
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  // Sumar 1 a la constante de un ncf
+  Future<Results> updateNcf(String ncf) async {
+    try {
+      return await _connection.query(
+        'UPDATE ncf_types SET constante = constante + 1 WHERE tipo = ?',
+        [ncf],
+      );
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  Future<Results> getInvoices() async {
+    try {
+      return await _connection.query('SELECT * FROM invoce');
     } catch (e) {
       return Future.error(e);
     }

@@ -1,3 +1,7 @@
+# Set the PDFium version and architecture
+set(PDFIUM_VERSION "4929" CACHE STRING "" FORCE)
+set(PDFIUM_ARCH "x64" CACHE STRING "" FORCE)
+
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
 project(simple_pos LANGUAGES CXX)

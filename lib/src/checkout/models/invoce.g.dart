@@ -9,6 +9,7 @@ part of 'invoce.dart';
 _$InvoiceImpl _$$InvoiceImplFromJson(Map<String, dynamic> json) =>
     _$InvoiceImpl(
       client: json['client'] as String,
+      ncf: json['ncf'] as String,
       vendedor: json['vendedor'] as String,
       date: json['date'] as String,
       products: json['products'] as String,
@@ -20,6 +21,7 @@ _$InvoiceImpl _$$InvoiceImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$InvoiceImplToJson(_$InvoiceImpl instance) =>
     <String, dynamic>{
       'client': instance.client,
+      'ncf': instance.ncf,
       'vendedor': instance.vendedor,
       'date': instance.date,
       'products': instance.products,

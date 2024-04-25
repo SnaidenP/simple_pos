@@ -17,7 +17,7 @@ class InvoceCubit extends Cubit<InvoceState> {
   Future<void> createPdf(Invoce invoice) async {
     emit(const InvoceState.loading());
     try {
-      await PdfInvoice().buildHeader(invoice);
+      await PdfInvoice().generatePDF(invoice);
       emit(const InvoceState.success());
     } catch (e) {
       emit(InvoceState.error(e.toString()));
@@ -31,7 +31,6 @@ class InvoceCubit extends Cubit<InvoceState> {
       print('invoice: $invoice');
       final results = await repository.createInvoice(invoice);
       print(results.affectedRows);
-
       emit(const InvoceState.success());
     } catch (e) {
       emit(InvoceState.error(e.toString()));

@@ -49,22 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  barcode:
-    dependency: transitive
-    description:
-      name: barcode
-      sha256: "91b143666f7bb13636f716b6d4e412e372ab15ff7969799af8c9e30a382e9385"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.6"
-  bidi:
-    dependency: transitive
-    description:
-      name: bidi
-      sha256: "1a7d0c696324b2089f72e7671fd1f1f64fef44c980f3cebc84e803967c597b63"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.10"
   bloc:
     dependency: "direct main"
     description:
@@ -225,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
+  date_time_format:
+    dependency: "direct main"
+    description:
+      name: date_time_format
+      sha256: dc47de14c95a7511e98ca429e1ebfd98c339badb496c9f2aaf56a70d07c7c0bf
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   encrypt:
     dependency: "direct main"
     description:
@@ -371,6 +363,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.7"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   io:
     dependency: transitive
     description:
@@ -531,14 +531,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
-  path_parsing:
-    dependency: transitive
-    description:
-      name: path_parsing
-      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   path_provider:
     dependency: "direct main"
     description:
@@ -587,14 +579,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
-  pdf:
-    dependency: "direct main"
-    description:
-      name: pdf
-      sha256: "243f05342fc0bdf140eba5b069398985cdbdd3dbb1d776cf43d5ea29cc570ba6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.10.8"
   petitparser:
     dependency: transitive
     description:
@@ -667,6 +651,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  qr_image_generator:
+    dependency: "direct main"
+    description:
+      name: qr_image_generator
+      sha256: dd32beb26b8d3f7cc7cd373af74f62c80d115b33b29d315d804d346d7e864383
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.9"
   shelf:
     dependency: transitive
     description:
@@ -744,6 +736,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "708425f534ef04253334763c8b75acc79eaec2d9b325bcd862575ea0a2207d87"
+      url: "https://pub.dev"
+    source: hosted
+    version: "25.1.41"
+  syncfusion_flutter_pdf:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_pdf
+      sha256: "0810e1c59e06f3ec0d9a783bf44f7dc57cede36262fbc3f737af71c79cc9450f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "25.1.41"
   term_glyph:
     dependency: transitive
     description:

@@ -21,6 +21,7 @@ Invoice _$InvoiceFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Invoice {
   String get client => throw _privateConstructorUsedError;
+  String get ncf => throw _privateConstructorUsedError;
   String get vendedor => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   String get products => throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ abstract class $InvoiceCopyWith<$Res> {
   @useResult
   $Res call(
       {String client,
+      String ncf,
       String vendedor,
       String date,
       String products,
@@ -62,6 +64,7 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
   @override
   $Res call({
     Object? client = null,
+    Object? ncf = null,
     Object? vendedor = null,
     Object? date = null,
     Object? products = null,
@@ -73,6 +76,10 @@ class _$InvoiceCopyWithImpl<$Res, $Val extends Invoice>
       client: null == client
           ? _value.client
           : client // ignore: cast_nullable_to_non_nullable
+              as String,
+      ncf: null == ncf
+          ? _value.ncf
+          : ncf // ignore: cast_nullable_to_non_nullable
               as String,
       vendedor: null == vendedor
           ? _value.vendedor
@@ -111,6 +118,7 @@ abstract class _$$InvoiceImplCopyWith<$Res> implements $InvoiceCopyWith<$Res> {
   @useResult
   $Res call(
       {String client,
+      String ncf,
       String vendedor,
       String date,
       String products,
@@ -131,6 +139,7 @@ class __$$InvoiceImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? client = null,
+    Object? ncf = null,
     Object? vendedor = null,
     Object? date = null,
     Object? products = null,
@@ -142,6 +151,10 @@ class __$$InvoiceImplCopyWithImpl<$Res>
       client: null == client
           ? _value.client
           : client // ignore: cast_nullable_to_non_nullable
+              as String,
+      ncf: null == ncf
+          ? _value.ncf
+          : ncf // ignore: cast_nullable_to_non_nullable
               as String,
       vendedor: null == vendedor
           ? _value.vendedor
@@ -176,6 +189,7 @@ class __$$InvoiceImplCopyWithImpl<$Res>
 class _$InvoiceImpl implements _Invoice {
   const _$InvoiceImpl(
       {required this.client,
+      required this.ncf,
       required this.vendedor,
       required this.date,
       required this.products,
@@ -188,6 +202,8 @@ class _$InvoiceImpl implements _Invoice {
 
   @override
   final String client;
+  @override
+  final String ncf;
   @override
   final String vendedor;
   @override
@@ -203,7 +219,7 @@ class _$InvoiceImpl implements _Invoice {
 
   @override
   String toString() {
-    return 'Invoice(client: $client, vendedor: $vendedor, date: $date, products: $products, metodoPago: $metodoPago, total: $total, id: $id)';
+    return 'Invoice(client: $client, ncf: $ncf, vendedor: $vendedor, date: $date, products: $products, metodoPago: $metodoPago, total: $total, id: $id)';
   }
 
   @override
@@ -212,6 +228,7 @@ class _$InvoiceImpl implements _Invoice {
         (other.runtimeType == runtimeType &&
             other is _$InvoiceImpl &&
             (identical(other.client, client) || other.client == client) &&
+            (identical(other.ncf, ncf) || other.ncf == ncf) &&
             (identical(other.vendedor, vendedor) ||
                 other.vendedor == vendedor) &&
             (identical(other.date, date) || other.date == date) &&
@@ -225,8 +242,8 @@ class _$InvoiceImpl implements _Invoice {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, client, vendedor, date, products, metodoPago, total, id);
+  int get hashCode => Object.hash(runtimeType, client, ncf, vendedor, date,
+      products, metodoPago, total, id);
 
   @JsonKey(ignore: true)
   @override
@@ -245,6 +262,7 @@ class _$InvoiceImpl implements _Invoice {
 abstract class _Invoice implements Invoice {
   const factory _Invoice(
       {required final String client,
+      required final String ncf,
       required final String vendedor,
       required final String date,
       required final String products,
@@ -256,6 +274,8 @@ abstract class _Invoice implements Invoice {
 
   @override
   String get client;
+  @override
+  String get ncf;
   @override
   String get vendedor;
   @override
